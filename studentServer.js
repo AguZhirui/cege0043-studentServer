@@ -21,3 +21,11 @@ app.use(function (req, res, next) {
        console.log("The file" + filename + "was requested.");
        next();
 }); 
+
+//Modify the code so that the server returns test.html when it is requested
+app.get('/test.html', function (req, res) {
+ // run some server-side code
+        console.log('test.html requested');
+        // note that __dirname gives the path to the studentServer.js file
+        res.sendFile(__dirname + '/test.html');
+}); 
