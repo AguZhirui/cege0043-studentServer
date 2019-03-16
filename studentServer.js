@@ -64,6 +64,15 @@ pool.connect(function(err,client,done) {
  });
 }); 
 
+//Add the following code to actually do the POST request to studentServer.js 
+app.post('/reflectData',function(req,res){
+ // note that we are using POST here as we are uploading data
+ // so the parameters form part of the BODY of the request rather
+ //than the RESTful API
+ console.dir(req.body);
+ // for now, just echo the request back to the client
+ res.send(req.body);
+}); 
 
 
 
