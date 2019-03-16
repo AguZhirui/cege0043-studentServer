@@ -14,6 +14,8 @@ app.get('/',function (req,res) {
 res.send("hello world from the HTTP server");
 }); 
 
+// Add the body-parser to studentServer.js close to the top so that you will be able to process
+the uploaded data
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
  extended: true
@@ -27,6 +29,20 @@ var app = express();
  next();
  }); 
 
+// Import the required database connectivity code and set up a database connection 
+var fs = require('fs');
+var pg = require('pg');
+var configtext =
+""+fs.readFileSync("/home/studentuser/certs/postGISConnection.js");
+// now convert the configruation file into the correct format -i.e. a name/value
+pair array
+var configarray = configtext.split(",");
+var config = {};
+for (var i = 0; i < configarray.length; i++) {
+ var split = configarray[i].split(':');
+ config[split[0].trim()] = split[1].trim();
+}
+var pool = new pg.Pool(config); 
 
 // serve static files - e.g. html, css
 // this should always be the last line in the server file
