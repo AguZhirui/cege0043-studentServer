@@ -15,27 +15,21 @@ res.send("hello world from the HTTP server");
 }); 
 
 // Add the body-parser to studentServer.js close to the top so that you will be able to process
-the uploaded data
+// the uploaded data
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
  extended: true
 }));
 app.use(bodyParser.json()); 
 
-var app = express();
- app.use(function(req, res, next) {
- res.header("Access-Control-Allow-Origin", "*");
- res.header("Access-Control-Allow-Headers", "X-Requested-With");
- next();
- }); 
-
 // Import the required database connectivity code and set up a database connection 
 var fs = require('fs');
 var pg = require('pg');
-var configtext =
-""+fs.readFileSync("/home/studentuser/certs/postGISConnection.js");
+var configtext =""+fs.readFileSync("/home/studentuser/certs/postGISConnection.js");
+
+
 // now convert the configruation file into the correct format -i.e. a name/value
-pair array
+// pair array
 var configarray = configtext.split(",");
 var config = {};
 for (var i = 0; i < configarray.length; i++) {
@@ -43,6 +37,14 @@ for (var i = 0; i < configarray.length; i++) {
  config[split[0].trim()] = split[1].trim();
 }
 var pool = new pg.Pool(config); 
+
+app.use(function(req, res, next) {
+res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Headers", "X-Requested-With");
+next();
+}); 
+
+
 
 // Add a simple app.get to test out the connection 
 app.get('/postgistest', function (req,res) {
